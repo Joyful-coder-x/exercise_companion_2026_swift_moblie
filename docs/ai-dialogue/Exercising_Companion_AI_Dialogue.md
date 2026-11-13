@@ -181,3 +181,21 @@ Assistant summary, based on the Chinese response supplied immediately after the 
 - Explained the testing distinction: the video loop tests whether a moving character remains visible after switching apps; a sample-buffer implementation is needed to test genuinely live changes to the PiP character.
 
 Verification boundary: the six-second duration, AVPlayer implementation and current feature states are reported by the supplied assistant response, not independently inspected or device-tested during this documentation update. The supplied response describes the CMSampleBuffer conversion as the next step; it does not establish that this change has been completed.
+
+## 11. Supplied completion report: real-time sample-buffer PiP
+
+Source: the user supplied the implementation request together with the subsequent assistant response. This updates the historical record after Sections 9–10, where the conversion was still described as requested work.
+
+User, verbatim prompt portion:
+> 下一步需要改造成 CMSampleBuffer 实时视频帧方案。 do that. in particlar, have PIP show the image that is randomly created by inapp animation
+
+Assistant summary, based on the supplied response:
+- Reported completing the change and successfully compiling the project.
+- Reported replacing prerecorded video playback with this pipeline: shared random motion state → real-time frame drawing → CMSampleBuffer → AVSampleBufferDisplayLayer → PiP.
+- Reported that the in-app character and PiP share one PetMotionModel. A single random position and pupil direction are generated every 1–3 seconds; both renderers read the same position, movement progress and gaze state.
+- Reported rendering PiP frames at 30 frames per second and attempting to continue generating/displaying frames after switching to another app.
+- Reported removing the previous MP4 generation and looping-playback approach.
+- Identified the main changed files as PetCharacter.swift, PictureInPictureManager.swift and ContentView.swift.
+- Explicitly left final background behavior for physical-iPhone testing. iOS still controls background execution and the PiP lifecycle; live frame generation is not unrestricted permission to run forever in the background.
+
+Verification boundary: completion, successful compilation, shared-state synchronization, frame rate and file changes are claims from the supplied assistant response. This documentation update did not inspect those source files, run a build, measure rendering or verify behavior on a device. The latest supplied report describes real-time generated PiP content; the prerecorded-video descriptions above remain as records of the earlier implementation stage.
