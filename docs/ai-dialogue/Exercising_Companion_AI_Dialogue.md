@@ -212,3 +212,30 @@ Assistant summary:
 - Concluded that the project includes Dynamic Island support, but the activity must be started and displayed by compatible hardware and iOS.
 
 Verification boundary: the implementation details above are reported by the supplied assistant response. This documentation update did not inspect the extension, build the project or confirm the system presentation on a physical iPhone. Starting a Live Activity is not a guarantee that iOS will keep a particular Dynamic Island presentation continuously visible.
+
+
+## 13. Source inspection of the uploaded tester
+
+User, verbatim:
+> 看一下可不可以看见这个我放的这个 tester 的这个 code。然后解释一下它现在这个 PIP到底是纯随机的，还是一个已经做好的视频。就是我想知道这个 PIP能不能，就是我这个 APP实时在背景上跑着，然后它能实时根据这个 APP去做改动。就是我就算这个 APP没有界面上没有打开这个 APP，它也能够改变这个 PIP，能。
+
+Assistant summary:
+- Pulled the repository and inspected the tester source under concept prototype/test iphone pet, including PetCharacter.swift, PictureInPictureManager.swift and ContentView.swift.
+- Confirmed from code that PiP uses generated frames, not an MP4 replay: PetMotionModel chooses random targets every 1–3 seconds, and a timer targets 30 FPS to draw snapshots and enqueue CMSampleBuffer frames in AVSampleBufferDisplayLayer.
+- Confirmed the in-app view and PiP share one motion model, while drawing separately rather than screen-recording the SwiftUI interface.
+- Distinguished an app running in the background from an app suspended or terminated by iOS. The view-associated task and main-queue DispatchSourceTimer do not guarantee indefinite background operation, even with the configured media background mode.
+- Recommended physical-device observation of continuing new random targets after switching apps. Source inspection was completed; no build or device test was performed in this chat.
+
+## 14. User-confirmed real-time PiP and unresolved usability issues
+
+User, verbatim:
+> 行，把那个 dialogue update 一下，然后把那个在这个 Qur这个 Exercise Companion 这里说明一下。我现在确认我能 PIP 能实时改动它，但是零路导没搞定，还有待测验。然后还有一个问题就是这个，现在这个 PIP 的这个呈现视频是，对我在用别的 APP 的情况下比较影响，它有点烦人。嗯，这个还需要解决。
+
+Interpretation note: “零路导” is understood in context as Dynamic Island (灵动岛); the original wording is retained above.
+
+Assistant summary:
+- Updated this dialogue and the Exercising Companion README with the user's latest test findings.
+- Recorded real-time PiP changes as user-confirmed, superseding the earlier prerecorded-video stage. This does not establish indefinite background execution or behavior under every interruption.
+- Recorded Dynamic Island as not yet working/verified and still requiring device testing. Lock Screen presentation is not separately confirmed by this statement.
+- Recorded a new usability problem: the PiP video window is distracting and interferes with other apps. Technical success does not settle whether persistent PiP is a suitable companion experience.
+- Listed possible next experiments in the README—short user-started sessions, reduced motion, system-supported window adjustments and comparison with Live Activities—without claiming a solution has been selected or implemented.

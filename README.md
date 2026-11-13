@@ -9,14 +9,14 @@ An iOS movement companion inspired by desktop pets. It recommends short movement
 
 ## Planned features
 
-These are proposed features, not completed functionality. The immediate technical test isolates the character and iOS display APIs. Movement-companion MVP work proceeds only if this project is selected after the comparative tests.
+This table distinguishes the implemented technical tester from proposed movement features. The technical test isolates the character and iOS display APIs. Movement-companion MVP work proceeds only if this project is selected after the comparative tests.
 
 | Feature | What it does | Scope |
 |---|---|---|
 | Simple companion | Display a temporary ball character with two eyes. Final character design is undecided. | Immediate technical test |
 | Random movement and gaze | Move within the app's bounds and independently change the direction of its pupils. | Immediate technical test |
-| Picture in Picture | Start/stop a system video window that remains visible when switching apps. Test prerecorded motion first; generated frames are a later option for true randomness. | Immediate technical test; device verification needed |
-| Dynamic Island and Lock Screen | Start, change and end one Live Activity with layouts for both surfaces. Begin with a static character and occasional expression updates. | Immediate technical test; supported-device verification needed |
+| Picture in Picture | Render live frames from the shared random motion model through CMSampleBuffer and AVSampleBufferDisplayLayer. The user has confirmed real-time PiP changes. | Implemented tester; real-time changes user-confirmed; cross-app intrusiveness unresolved |
+| Dynamic Island and Lock Screen | Start, change and end one Live Activity with layouts for both surfaces. Begin with a static character and occasional expression updates. | Implemented layouts; Dynamic Island not yet working/verified; Lock Screen verification pending |
 | Display controls | Provide explicit PiP and Live Activity controls so each behavior can be tested independently. | Immediate technical test |
 | Context and time selection | Let users choose school, home or outdoors and a short available duration. | Movement MVP |
 | Tagged activity library | Store reviewed movements with tags such as duration, setting, space, equipment and seated/standing posture. | Movement MVP |
@@ -44,6 +44,15 @@ The initial prototype uses manual context selection and a curated, tagged moveme
 
 ## Current status
 
-Concept documentation is available; no runnable iOS app has been added yet. These documents were moved from the Curio repository to keep the projects separate.
+The [iOS technical tester](concept%20prototype/test%20iphone%20pet) is now in this repository. It includes an in-app character, sample-buffer PiP rendering and Live Activity code. It is a technical prototype, not the complete movement-companion app.
+
+| Area | Current finding | Next step |
+|---|---|---|
+| Real-time PiP | The user has confirmed that PiP content can change in real time. Source inspection shows a shared PetMotionModel feeding generated CMSampleBuffer frames, rather than a prerecorded video loop. | Continue testing background duration and interruptions; do not assume indefinite background execution. |
+| Dynamic Island | Not yet working/verified in the user's test. A Live Activity extension and layouts exist, but code presence does not establish successful system display. | Check signing, compatible hardware, Live Activity settings and start/update behavior on a device. |
+| Lock Screen | Live Activity layout exists; successful device presentation has not been separately confirmed. | Verify separately from Dynamic Island. |
+| Cross-app experience | The user finds the PiP video window distracting and intrusive while using other apps. This is an unresolved usability problem even though real-time rendering works. | Test shorter, user-started sessions, less motion and system-supported placement/size options; compare with less intrusive system surfaces if Live Activities work. No fix has been selected or implemented. |
+
+The latest findings supersede earlier documentation describing PiP as a future real-time experiment or stating that no app code is present. Companion design and movement recommendations remain in development.
 
 Curio has its own [repository, proposal and plan](https://github.com/Joyful-coder-x/Curio_2026_swift_moblie).
