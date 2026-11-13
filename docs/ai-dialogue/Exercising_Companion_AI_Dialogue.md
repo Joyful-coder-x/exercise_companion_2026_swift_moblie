@@ -46,3 +46,59 @@ User, verbatim:
 > [https://github.com/Joyful-coder-x/exercise_companion_2026_swift_moblie.git](https://github.com/Joyful-coder-x/exercise_companion_2026_swift_moblie.git) 这个 exercise companion 应该在这里头，不在那个。就是这是两个分开的 project，然后要有自己的计划。就是这两个会并行。准确地说是，我下周会……我下周五前会测试，会写两个小测试，来测试它们两个的可能性。然后确定以后，在下周五会把它再减成一个，然后去把它落实。
 
 Assistant summary: separated the repositories and plans. Both small feasibility tests run in parallel before Friday, November 20, 2026. On that Friday, compare findings and select one project; only the selected project proceeds to full implementation. The other is paused. Earlier plans describing the sequence less precisely are superseded by this clarification.
+
+## 6. Research request: a companion visible across other apps
+
+User, verbatim:
+> 针对 exercising companion 做一个 research。我想像捉虫一样让这个小，咱现在暂时比如说是一个小圆球加俩眼睛，是这个形象，这个因为形象还没有定。我想让它能够出现在手机上的任何地方，最好是像 YouTube 的那个小花框一样，它可以在不同，就是它不受我打开其他 app 影响。看一下它有没有可能实施，然后大概就是需要哪些技术，给我一到两个方案，然后给我一些 article description。
+
+Assistant summary:
+- Researched Apple documentation for cross-app display, Picture in Picture (PiP), Live Activities, background execution and review requirements.
+- Distinguished a character inside a system-managed video window from a transparent character moving freely over other apps.
+- Proposed two iOS approaches: PiP using AVKit/AVFoundation, or Live Activities using ActivityKit/WidgetKit for Dynamic Island and Lock Screen presentations.
+- Described AVPlayer/AVPlayerLayer for prerecorded animation and AVSampleBufferDisplayLayer for generated video frames. PiP does not directly host an arbitrary interactive SwiftUI screen.
+- Explained that the documented PiP APIs do not provide a supported transparent, borderless pet overlay. Window positioning and controls are system-managed; continuous display cannot be guaranteed.
+- Recommended a user-started, finite movement session rather than using media background execution solely to keep a decorative pet alive. App Store review approval was not promised.
+- Explained that Live Activities suit ongoing session status, not an unrestricted continuous animation loop. No device test or implemented prototype was claimed.
+
+## 7. Follow-up: can it crawl freely over the phone screen?
+
+User, verbatim:
+> 像虫一个在，就是在手机屏幕上移动这个有任何解决方案吗，还是现在的确没有。
+
+Assistant summary:
+- Clarified that on a non-jailbroken iPhone, ordinary public APIs do not offer a general-purpose transparent overlay that freely crawls over other apps. App windows belong to the app's own scenes.
+- Clarified the PiP distinction: a character can move inside the video window; that does not let the app autonomously move the system PiP window around the whole screen.
+- Noted that Android offers a closer implementation path through TYPE_APPLICATION_OVERLAY and user-granted SYSTEM_ALERT_WINDOW authorization, while still having system, app and background-execution restrictions.
+- Suggested retaining iOS if app-contained animation or system containers are acceptable, and considering Android if unrestricted-looking cross-app movement is the central interaction. No platform change was decided.
+
+## 8. Minimal technical test app
+
+User, verbatim:
+> So for now I want to write a sort of test-run app that basically have, like, a little ball with two eyes that is moving randomly, so it's, like, looking around randomly. So it's kind of a random app, like it has some movement to it. And then I want to, through the app, have this little guy show up in picture-in-picture, with preferably transparent background, and have it also show up in 灵动岛和锁屏. Give me the link to technology I need to achieve this, and rough description on how to do it. Make it as simple and as clean as possible so I can focus on the technique itself.
+
+Assistant summary:
+- Proposed one minimal SwiftUI app with three isolated technical tests, without a backend, AI, exercise database or third-party libraries.
+- In-app test: draw a circular body, eyes and pupils with SwiftUI shapes; periodically choose bounded random body destinations and pupil offsets, and animate changes. Stop the animation task when the view disappears. Canvas and TimelineView are optional later tools.
+- PiP test: first play a short prerecorded animation through AVPlayer and AVPictureInPictureController to verify cross-app presentation. Clearly distinguish prerecorded motion from genuine random movement. If needed later, render live random motion into CMSampleBuffer frames for AVSampleBufferDisplayLayer, with substantially more implementation work.
+- Include PiP support checks, a user-operated start/stop control, media audio-session configuration and the Audio, AirPlay, and Picture in Picture background capability. Use an opaque background for the initial test; transparent SwiftUI backgrounds do not establish transparent cross-app PiP.
+- Live Activity test: add a Widget Extension with Live Activity support, enable NSSupportsLiveActivities, define a small expression state, and provide ActivityConfiguration layouts for Lock Screen and Dynamic Island compact, minimal and expanded presentations. These are presentations of one Live Activity, not two separate systems.
+- Start with app buttons for Start, Change Expression and End. Use a static character with occasional state changes; Live Activities do not support an unrestricted background animation loop, and ordinary SwiftUI timers do not keep running indefinitely after suspension. Documented update animations have a maximum duration of two seconds.
+- Suggested iOS 17+ as a convenient prototype target and a physical Dynamic Island-equipped iPhone for verification. The proposed test interface contains only the character, PiP controls and Live Activity controls. No code or device verification was completed in this exchange.
+
+### Official technical references discussed
+
+- [SwiftUI graphics: Add rich graphics to your SwiftUI app](https://developer.apple.com/videos/play/wwdc2021/10021/) — drawing, Canvas and time-driven animation.
+- [Adopting Picture in Picture in a custom player](https://developer.apple.com/documentation/avkit/adopting-picture-in-picture-in-a-custom-player) — support checks, player integration, lifecycle and restoring the app interface.
+- [Sample-buffer PiP content source](https://developer.apple.com/documentation/avkit/avpictureinpicturecontroller/contentsource-swift.class/init(samplebufferdisplaylayer:playbackdelegate:)) — the generated-video-frame approach.
+- [Displaying live data with Live Activities](https://developer.apple.com/documentation/activitykit/displaying-live-data-with-live-activities) — setup and lifecycle.
+- [Creating custom views for Live Activities](https://developer.apple.com/documentation/activitykit/creating-custom-views-for-live-activities) — Lock Screen and Dynamic Island layouts.
+- [Animating data updates in widgets and Live Activities](https://developer.apple.com/documentation/widgetkit/animating-data-updates-in-widgets-and-live-activities) — supported update animations and limits.
+- [Adding interactivity to widgets and Live Activities](https://developer.apple.com/documentation/widgetkit/adding-interactivity-to-widgets-and-live-activities) — App Intents-based actions.
+- [Scheduling a notification locally from your app](https://developer.apple.com/documentation/usernotifications/scheduling-a-notification-locally-from-your-app) — system-scheduled reminders.
+- [Multitask with Picture in Picture on iPhone](https://support.apple.com/guide/iphone/multitask-with-picture-in-picture-iphcc3587b5d/ios) — user-controlled window movement and resizing.
+- [App Review Guidelines: software requirements](https://developer.apple.com/app-store/review/guidelines/#software-requirements) — intended uses of background services.
+- [UIWindowScene](https://developer.apple.com/documentation/uikit/uiwindowscene) — app-scoped windows.
+- [Android application overlays](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#TYPE_APPLICATION_OVERLAY) — the alternative platform's overlay API.
+
+These links record the sources used in the discussion. Proposed behaviors still require implementation and physical-device testing; this dialogue is not evidence of completed functionality.
