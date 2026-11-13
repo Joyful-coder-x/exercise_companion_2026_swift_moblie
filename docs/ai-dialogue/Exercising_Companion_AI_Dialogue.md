@@ -102,3 +102,59 @@ Assistant summary:
 - [Android application overlays](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#TYPE_APPLICATION_OVERLAY) — the alternative platform's overlay API.
 
 These links record the sources used in the discussion. Proposed behaviors still require implementation and physical-device testing; this dialogue is not evidence of completed functionality.
+
+## 9. Follow-up implementation conversation supplied by screenshot
+
+Source: the user supplied a screenshot of a separate implementation conversation, followed by the text of one assistant response. The prompts below are transcribed from the screenshot; spelling, capitalization and repetition are preserved. Line wrapping is normalized. Relative screenshot timestamps are omitted because they do not establish absolute message times. Assistant responses not supplied are not reconstructed.
+
+### Initial implementation instruction
+
+User, verbatim:
+> Build **one small SwiftUI app with three independent tests**. No backend, AI, exercise database, or third-party libraries.
+
+This repeats the earlier suggested scope as an implementation instruction in the separate conversation.
+
+### Completion check
+
+User, verbatim:
+> are you done?
+
+Assistant response: not supplied in the screenshot.
+
+### Request for an explanation of the implementation
+
+User, verbatim from screenshot:
+> use chinese, exaplain what you currently have? wHAT IS TH the live activty, how is this suppose to go to dynamic island
+
+Assistant summary, based on the response text subsequently supplied by the user:
+- Reported three independent experiments as completed: an in-app SwiftUI character, prerecorded-video PiP, and a Live Activity.
+- Described an orange Circle with white eyes and black pupils. The body chooses a new bounded location every 1–3 seconds, pupils move independently, and the animation task stops when leaving the page.
+- Reported generating a short moving-ball video when the app starts and using Start PiP to attempt system PiP playback. Explicitly described this as a prerecorded loop, not genuinely live random animation. Said playback should continue after switching apps; that wording describes expected behavior, not supplied test evidence.
+- Explained Live Activity as system-managed ongoing-state UI shared by the Lock Screen and Dynamic Island on supported devices. The character has three static states: looking left, resting and looking right.
+- Described app controls: Start requests a Live Activity, Change Expression updates its state, and End finishes/removes it.
+- Reported a PetLiveActivityExtension using ActivityConfiguration for the Lock Screen and DynamicIsland layouts with compactLeading, compactTrailing, minimal and expanded regions. The app calls Activity.request(...), and iOS uses the matching extension configuration to present it.
+- Suggested signing and installing both targets, allowing Live Activities, starting the activity, switching away from the app, long-pressing the Dynamic Island, locking the phone and checking expression updates. Actual availability depends on compatible hardware and system settings; “Pro” branding alone is not a compatibility test.
+- Reiterated that PiP is a system video window rather than a transparent borderless pet, and Live Activities cannot rely on an indefinitely running SwiftUI Timer for permanent animation.
+
+Attribution and verification: these are claims from the supplied assistant response in the separate conversation. This documentation update did not inspect that implementation, build it, or verify PiP/Live Activity behavior on a device. The earlier statement that no runnable app had been added describes the earlier stage of the discussion, not an independently checked account of the later implementation.
+
+### Dynamic Island confirmation question
+
+User, verbatim:
+> so do app it self currently have dynamic island?
+
+Assistant response: not supplied. The preceding supplied response reports a Dynamic Island configuration in a Widget Extension; device behavior is not independently established here.
+
+### Whether PiP is live or prerecorded
+
+User, verbatim:
+> for the PIP, is the image contro by app? or is this jus a replay of vedio?, on other word can I change this  window by haing hte app constantly running i the back ground
+
+Assistant response: not supplied. The supplied implementation explanation above identifies the initial PiP source as prerecorded video. No unrestricted continuous background execution is established by this question.
+
+### Requested next change: live generated PiP frames
+
+User, verbatim:
+> 下一步需要改造成 CMSampleBuffer 实时视频帧方案。 do that. in particlar, have PIP show the image that is randomly created by inapp animation
+
+Request summary: replace prerecorded PiP playback with CMSampleBuffer-based real-time frames representing the app's randomly generated character animation. The desired result is live generated content rather than a replayed clip. The screenshot does not supply a completion response or verification for this change, so it is recorded as requested work, not as a completed feature.
