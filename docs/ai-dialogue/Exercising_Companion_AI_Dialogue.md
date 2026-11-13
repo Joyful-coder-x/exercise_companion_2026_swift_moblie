@@ -199,3 +199,16 @@ Assistant summary, based on the supplied response:
 - Explicitly left final background behavior for physical-iPhone testing. iOS still controls background execution and the PiP lifecycle; live frame generation is not unrestricted permission to run forever in the background.
 
 Verification boundary: completion, successful compilation, shared-state synchronization, frame rate and file changes are claims from the supplied assistant response. This documentation update did not inspect those source files, run a build, measure rendering or verify behavior on a device. The latest supplied report describes real-time generated PiP content; the prerecorded-video descriptions above remain as records of the earlier implementation stage.
+
+## 12. Supplied answer: whether the project includes Dynamic Island
+
+Source: the user supplied the assistant's answer to the earlier Dynamic Island confirmation question. This fills the previously missing response; it does not constitute a new source-code or device check.
+
+Assistant summary:
+- Reported that the main app contains logic to create, update and end a Live Activity, and that PetLiveActivityExtension draws the Dynamic Island and Lock Screen presentations.
+- Clarified that pressing Start in the app requests the activity; iOS then controls its presentation. Dynamic Island is system UI, not a simulated island drawn inside the app's own page.
+- Reported defined layouts for compact, minimal and expanded Dynamic Island presentations, plus the Lock Screen, with three character states: looking left, resting and looking right.
+- Described the verification steps: run on a compatible physical iPhone, correctly sign the app and extension, allow Live Activities in system settings, press Start, then leave the app or lock the device and check the corresponding presentation.
+- Concluded that the project includes Dynamic Island support, but the activity must be started and displayed by compatible hardware and iOS.
+
+Verification boundary: the implementation details above are reported by the supplied assistant response. This documentation update did not inspect the extension, build the project or confirm the system presentation on a physical iPhone. Starting a Live Activity is not a guarantee that iOS will keep a particular Dynamic Island presentation continuously visible.
