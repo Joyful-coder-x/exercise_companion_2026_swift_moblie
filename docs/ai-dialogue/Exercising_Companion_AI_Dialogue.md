@@ -158,3 +158,26 @@ User, verbatim:
 > 下一步需要改造成 CMSampleBuffer 实时视频帧方案。 do that. in particlar, have PIP show the image that is randomly created by inapp animation
 
 Request summary: replace prerecorded PiP playback with CMSampleBuffer-based real-time frames representing the app's randomly generated character animation. The desired result is live generated content rather than a replayed clip. The screenshot does not supply a completion response or verification for this change, so it is recorded as requested work, not as a completed feature.
+
+
+## 10. Additional supplied prompts and PiP implementation explanation
+
+Source: additional conversation text pasted by the user. These prompt spellings differ slightly from the screenshot transcription; they are preserved below as supplied rather than silently replacing the earlier record.
+
+User, verbatim:
+> o do app it self currently have dynmic island?
+
+Assistant response to this exact prompt: not supplied. The earlier supplied explanation reports a Dynamic Island configuration and manually updated static states; this update does not independently verify the implementation.
+
+User, verbatim prompt portion of the supplied message:
+> for the PIP, is the image contro by app? or is this jus a replay of vedio?, on other word can I change this  window by haing hte app constantly runing i the back ground
+
+Assistant summary, based on the Chinese response supplied immediately after the prompt:
+- Reported that the current PiP loops an approximately six-second ball-animation video generated at app startup and played with AVPlayer. The system continues media playback after switching apps; this implementation does not redraw the character's position or gaze in real time during playback.
+- Distinguished the in-app character's live random animation from the prerecorded PiP loop and from Dynamic Island's static, manually updated character states.
+- Explained that normal Timer or SwiftUI animation execution is usually suspended in the background. Enabling background audio/PiP does not grant unrestricted execution of arbitrary code.
+- Proposed the next rendering pipeline: app-generated image → CMSampleBuffer → AVSampleBufferDisplayLayer → PiP. This would allow generated frames to reflect changing character movement and expression, subject to implementation and background lifecycle constraints.
+- Identified the need for valid ongoing video frames and playback timing, system-managed PiP presentation, and review of whether the experience is an appropriate media use. No indefinite background operation or transparent, borderless overlay was promised.
+- Explained the testing distinction: the video loop tests whether a moving character remains visible after switching apps; a sample-buffer implementation is needed to test genuinely live changes to the PiP character.
+
+Verification boundary: the six-second duration, AVPlayer implementation and current feature states are reported by the supplied assistant response, not independently inspected or device-tested during this documentation update. The supplied response describes the CMSampleBuffer conversion as the next step; it does not establish that this change has been completed.
