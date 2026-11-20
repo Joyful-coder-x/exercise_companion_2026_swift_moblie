@@ -47,6 +47,8 @@ User, verbatim:
 
 Assistant summary: separated the repositories and plans. Both small feasibility tests run in parallel before Friday, November 20, 2026. On that Friday, compare findings and select one project; only the selected project proceeds to full implementation. The other is paused. Earlier plans describing the sequence less precisely are superseded by this clarification.
 
+The shared Week 10 report and README feature-table requests are recorded in the [Curio dialogue](https://github.com/Joyful-coder-x/Curio_2026_swift_moblie/blob/main/docs/ai-dialogue/Curio_AI_Dialogue.md#historical-backfill--course-deliverables).
+
 ## 6. Research request: a companion visible across other apps
 
 User, verbatim:
@@ -102,6 +104,17 @@ Assistant summary:
 - [Android application overlays](https://developer.android.com/reference/android/view/WindowManager.LayoutParams#TYPE_APPLICATION_OVERLAY) — the alternative platform's overlay API.
 
 These links record the sources used in the discussion. Proposed behaviors still require implementation and physical-device testing; this dialogue is not evidence of completed functionality.
+
+**User instruction (verbatim)**
+> Update一下这个Exercise Companion，把刚才的对话放到那个dialog里。
+
+**User request summary (English):** Add the preceding technical discussion to the project dialogue.
+**Assistant response summary (English):** Added the overlay, PiP and Live Activity discussion with sources in sections 6–8.
+
+**User instruction (verbatim, accompanying the screenshot)**
+> add to ai diolog
+
+**Assistant response summary (English):** Transcribed the visible prompts and summarized the subsequently supplied response in section 9.
 
 ## 9. Follow-up implementation conversation supplied by screenshot
 
